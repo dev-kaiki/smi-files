@@ -1,0 +1,25 @@
+# Flutter / Dart
+build/
+.dart_tool/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+**/flutter/ephemeral/
+**/.symlinks/
+**/Pods/
+
+# Gradle / Android
+.gradle/
+local.properties
+*.jks
+*.keystore
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Segredos — as credenciais do Supabase entram por --dart-define
+.env
+.env.*
+*.pem
