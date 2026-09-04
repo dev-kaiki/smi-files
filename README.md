@@ -64,6 +64,24 @@ flutter run \
 
 The app refuses to start without both, rather than falling back to a default.
 
+For day-to-day work, put them in a file instead — retyping two long keys on
+every run is how one of them eventually ends up pasted into the wrong place:
+
+```json
+{
+  "SUPABASE_URL": "https://your-project.supabase.co",
+  "SUPABASE_ANON_KEY": "your-publishable-key"
+}
+```
+
+```bash
+flutter run -d macos --dart-define-from-file=dart-define.json
+```
+
+`dart-define*.json` is in `.gitignore` already, before any such file exists.
+This app's credentials were committed once, and an ignore rule added after a
+leak protects nothing.
+
 ## Platforms
 
 | | |
