@@ -23,3 +23,8 @@ local.properties
 .env
 .env.*
 *.pem
+
+# Arquivo local de --dart-define-from-file. Ignorado antes de existir, de
+# proposito: a credencial deste app ja foi commitada uma vez, e a regra que
+# so aparece depois do vazamento nao serve para nada.
+dart-define*.json
