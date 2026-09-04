@@ -51,5 +51,16 @@
 	<string>O microfone grava o audio dos videos anexados a ordem de servico.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>O acesso as fotos permite anexar imagens ja existentes no aparelho a ordem de servico.</string>
+	<!-- Declaracao de conformidade de exportacao. false significa "este app
+	     nao usa criptografia fora das isencoes": aqui so ha HTTPS/TLS para
+	     falar com o Supabase, que e caso isento. Nao ha algoritmo proprio
+	     nem criptografia de dados em repouso.
+
+	     Sem esta chave o App Store Connect pergunta isso a cada envio de
+	     build, e a resposta errada por pressa e uma declaracao legal errada.
+	     Se um dia o app passar a cifrar arquivos localmente, este valor
+	     precisa ser revisto. -->
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>
