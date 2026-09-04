@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Smi Midias</string>
+	<string>SMI Files</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>smi_midias</string>
+	<string>SMI Files</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -45,5 +45,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>A camera e usada para registrar fotos e videos da ordem de servico em campo.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>O microfone grava o audio dos videos anexados a ordem de servico.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>O acesso as fotos permite anexar imagens ja existentes no aparelho a ordem de servico.</string>
 </dict>
 </plist>

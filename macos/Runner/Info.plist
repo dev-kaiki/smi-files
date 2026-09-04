@@ -28,5 +28,11 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSCameraUsageDescription</key>
+	<string>A camera e usada para registrar fotos e videos da ordem de servico em campo.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>O microfone grava o audio dos videos anexados a ordem de servico.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>O acesso as fotos permite anexar imagens ja existentes no aparelho a ordem de servico.</string>
 </dict>
 </plist>

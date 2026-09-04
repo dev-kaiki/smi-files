@@ -64,6 +64,45 @@ flutter run \
 
 The app refuses to start without both, rather than falling back to a default.
 
+## Platforms
+
+| | |
+|---|---|
+| **Android** | The target it was built for — the technician's phone, on the plant floor |
+| **iOS** | Camera, microphone and photo-library permissions declared |
+| **macOS** | Sandbox entitlements for network, camera, printing and user-selected files |
+| **Windows, Linux, web** | Scaffolding present, not exercised |
+
+Two things are easy to get wrong here, and both fail in ways that do not look
+like what they are.
+
+**The bundle identifier.** `flutter create` leaves `com.example.<app>` behind,
+and Apple refuses to provision it — the app cannot be signed at all, on any
+device. The Apple targets carry `br.com.smi.files` instead.
+
+**The macOS App Sandbox denies outgoing network by default.** A sandboxed app
+without `com.apple.security.network.client` launches normally and then fails
+every request, which reads as a backend outage rather than a missing
+entitlement. Both `DebugProfile.entitlements` and `Release.entitlements`
+declare it — `Release` matters most, because the debug template ships with
+`network.server` only, so the bug hides until the build you actually give
+someone.
+
+The iOS usage descriptions are the same class of problem: iOS does not deny the
+camera when `NSCameraUsageDescription` is missing, it terminates the process.
+
+### First build on a Mac
+
+```bash
+flutter pub get
+(cd ios && pod install)      # or macos/ — first build only
+flutter run -d <device>   --dart-define=SUPABASE_URL=https://your-project.supabase.co   --dart-define=SUPABASE_ANON_KEY=your-publishable-key
+```
+
+The Android `applicationId` is deliberately left as it is. Changing it would
+make the next release a *different app* to Android, and the installed copies
+would keep their local outbox in the old container.
+
 ## Notes on this repository
 
 This is a **sanitized publication** of a system in internal testing at SMI. The Supabase
