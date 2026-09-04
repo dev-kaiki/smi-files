@@ -14,6 +14,13 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
+	<!-- Separado do PRODUCT_NAME de proposito. O PRODUCT_NAME vira o
+	     nome do arquivo .app, e um espaco ali quebra o `open` que o
+	     `flutter run` dispara para trazer a janela para a frente.
+	     O macOS prefere o CFBundleDisplayName para exibir, entao o
+	     nome com espaco continua aparecendo no menu e no Dock. -->
+	<key>CFBundleDisplayName</key>
+	<string>SMI Files</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
