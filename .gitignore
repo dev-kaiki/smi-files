@@ -28,3 +28,9 @@ local.properties
 # proposito: a credencial deste app ja foi commitada uma vez, e a regra que
 # so aparece depois do vazamento nao serve para nada.
 dart-define*.json
+
+# Assinatura de quem compila, nao do projeto. O Team ID nao e segredo,
+# mas gravado no repositorio ele obriga qualquer outra pessoa a editar o
+# projeto para conseguir compilar.
+**/Signing.xcconfig
+!**/Signing.example.xcconfig

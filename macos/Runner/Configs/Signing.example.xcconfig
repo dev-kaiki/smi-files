@@ -1,0 +1,9 @@
+// Copie para Signing.xcconfig e ponha o seu Team ID.
+// O arquivo real e ignorado pelo git de proposito: a assinatura e de
+// quem compila, nao do projeto.
+//
+//   cp Signing.example.xcconfig Signing.xcconfig
+//
+// O Team ID esta em developer.apple.com/account, em "Informacoes da
+// assinatura" / "ID de equipe".
+DEVELOPMENT_TEAM = SEU_TEAM_ID

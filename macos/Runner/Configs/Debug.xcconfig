@@ -1,2 +1,6 @@
 #include "../../Flutter/Flutter-Debug.xcconfig"
 #include "Warnings.xcconfig"
+
+// Assinatura local, opcional: com #include? o arquivo pode nao
+// existir e o build segue. Veja Signing.example.xcconfig.
+#include? "Signing.xcconfig"
