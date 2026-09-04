@@ -352,19 +352,29 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 8),
 
                     // LEMBRAR-ME
-                    CheckboxListTile(
-                      value: _rememberMe,
-                      onChanged: _isLoading
-                          ? null
-                          : (value) {
-                        setState(() => _rememberMe = value ?? false);
-                      },
-                      contentPadding: EdgeInsets.zero,
-                      controlAffinity: ListTileControlAffinity.leading,
-                      title: const Text('Lembrar-me'),
-                      subtitle: Text(
-                        'Entrar automaticamente neste aparelho',
-                        style: TextStyle(color: cs.onSurfaceVariant),
+                    //
+                    // O Material transparente nao e enfeite. O cartao de login
+                    // e um Container com BoxDecoration opaca, e o ListTile
+                    // pinta fundo e ondulacao de toque no Material mais
+                    // proximo — que aqui esta ACIMA do Container. Sem este
+                    // Material no meio, o fundo do cartao cobre o efeito e o
+                    // checkbox nao responde visualmente ao toque.
+                    Material(
+                      type: MaterialType.transparency,
+                      child: CheckboxListTile(
+                        value: _rememberMe,
+                        onChanged: _isLoading
+                            ? null
+                            : (value) {
+                          setState(() => _rememberMe = value ?? false);
+                        },
+                        contentPadding: EdgeInsets.zero,
+                        controlAffinity: ListTileControlAffinity.leading,
+                        title: const Text('Lembrar-me'),
+                        subtitle: Text(
+                          'Entrar automaticamente neste aparelho',
+                          style: TextStyle(color: cs.onSurfaceVariant),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 12),
