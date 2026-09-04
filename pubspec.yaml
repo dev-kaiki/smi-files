@@ -35,7 +35,11 @@ dependencies:
   image: ^4.3.0
 
   # ----------- UTILIDADES ---------
-  intl: 0.20.2
+  # Com acento circunflexo, nao pino exato: o flutter_localizations muda a
+  # versao de intl que exige a cada Flutter (3.41 fixa 0.20.2, 3.47 pede
+  # ^0.20.3). Um pino exato aqui casa com uma dessas e falha na outra, e
+  # o projeto passa a so resolver na maquina de quem escreveu o pino.
+  intl: ^0.20.2
   shared_preferences: ^2.3.2
 
 dev_dependencies:
