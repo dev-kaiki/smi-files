@@ -21,6 +21,19 @@ if (-not (Test-Path 'dart-define.json')) {
     exit 1
 }
 
+# Conferir o nome das chaves, e nao so a existencia do arquivo. Este app le
+# SUPABASE_ANON_KEY; o checklist-smi le SUPABASE_ANON. Trocar os dois nao da
+# erro de build: gera um APK que so falha no login, na mao do tecnico.
+$def = Get-Content 'dart-define.json' -Raw | ConvertFrom-Json
+foreach ($chave in @('SUPABASE_URL', 'SUPABASE_ANON_KEY')) {
+    if (-not $def.PSObject.Properties.Name.Contains($chave) -or
+        [string]::IsNullOrWhiteSpace($def.$chave)) {
+        Write-Host "ERRO: dart-define.json sem a chave $chave." -ForegroundColor Red
+        Write-Host 'Este app espera SUPABASE_URL e SUPABASE_ANON_KEY.'
+        exit 1
+    }
+}
+
 flutter clean
 flutter pub get
 flutter build apk --release --dart-define-from-file=dart-define.json
