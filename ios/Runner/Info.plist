@@ -62,5 +62,7 @@
 	     precisa ser revisto. -->
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>O seletor de arquivos pode acessar a localizacao registrada nas fotos ao lista-las. O aplicativo nao coleta, armazena nem transmite sua localizacao.</string>
 </dict>
 </plist>
