@@ -1,4 +1,4 @@
-# SMI Files
+# SMI Arquivos
 
 Work-order management for an industrial maintenance team — built **offline-first**, because the technician is inside a factory with no signal when the work actually happens.
 

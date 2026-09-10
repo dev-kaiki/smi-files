@@ -1,4 +1,4 @@
-# Gera o APK de release do SMI Files para instalacao na mao.
+# Gera o APK de release do SMI Arquivos para instalacao na mao.
 #
 # Rode NESTA maquina Windows: e aqui que mora a debug.keystore que assinou os
 # APKs que os tecnicos ja tem. Compilar em outra maquina gera uma chave nova,

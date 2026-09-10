@@ -20,7 +20,7 @@
 	     O macOS prefere o CFBundleDisplayName para exibir, entao o
 	     nome com espaco continua aparecendo no menu e no Dock. -->
 	<key>CFBundleDisplayName</key>
-	<string>SMI Files</string>
+	<string>SMI Arquivos</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
