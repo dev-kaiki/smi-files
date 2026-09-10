@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/supabase/supabase_manager.dart';
 import '../../utils/setor_access.dart';
@@ -60,7 +61,18 @@ class _LoginPageState extends State<LoginPage> {
       final savedNome = prefs.getString('tecnico_nome');
       final savedSetor = prefs.getString('tecnico_setor');
 
-      if (remember && savedId != null && savedNome != null && savedSetor != null) {
+      // Lembrar-me sozinho nao basta: sem sessao do Supabase o tecnico cairia
+      // no home sem o papel authenticated e cada consulta voltaria vazia por
+      // RLS, parecendo perda de dados. Sem sessao, pede a senha de novo.
+      // Offline isso continua valendo, porque a sessao fica persistida no
+      // aparelho e so some em logout ou reinstalacao.
+      final temSessao = SupabaseManager.client.auth.currentSession != null;
+
+      if (remember &&
+          temSessao &&
+          savedId != null &&
+          savedNome != null &&
+          savedSetor != null) {
         final setorNormalizado = normalizeSetor(savedSetor);
 
         // se o setor salvo NÃO tiver mais acesso, volta pra tela de login normal
@@ -165,26 +177,40 @@ class _LoginPageState extends State<LoginPage> {
       final codigo = _codigoCtrl.text.trim();
       final senha = _senhaCtrl.text.trim();
 
-      // V9.4 FIX: usa RPC app_login_tecnico em vez de query direta com
-      // .eq('senha', senha). A query direta expunha a senha como parâmetro
-      // de URL nos logs do Supabase (?senha=eq.VALOR). A RPC valida no banco
-      // e nunca expõe a senha em query string.
-      final List<dynamic> rows = await SupabaseManager.client
-          .rpc('app_login_tecnico', params: {
-            'p_codigo': codigo,
-            'p_senha': senha,
-          })
-          .timeout(
-        const Duration(seconds: 12),
-        onTimeout: () => throw TimeoutException('Tempo esgotado ao conectar.'),
-      );
-
-      if (rows.isEmpty) {
+      // A senha e verificada pelo Supabase Auth, contra um hash bcrypt. O
+      // tecnico continua entrando com codigo e senha: o e-mail da conta e
+      // derivado do codigo (<codigo>@smi.local) e nunca aparece na tela.
+      //
+      // O que a sessao resultante habilita importa tanto quanto o login: as
+      // politicas de RLS das tabelas exigem o papel authenticated, que so
+      // existe a partir daqui. Com a chave anon sozinha nao se le mais nada.
+      try {
+        await SupabaseManager.client.auth
+            .signInWithPassword(
+              email: '${codigo.toLowerCase()}@smi.local',
+              password: senha,
+            )
+            .timeout(
+              const Duration(seconds: 12),
+              onTimeout: () =>
+                  throw TimeoutException('Tempo esgotado ao conectar.'),
+            );
+      } on AuthException {
         _showSnack('Código ou senha inválidos.');
         return;
       }
 
-      final resp = rows.first as Map<String, dynamic>;
+      final resp = await SupabaseManager.client
+          .from('tecnicos')
+          .select('id, nome, codigo, setor, ativo')
+          .eq('codigo', codigo)
+          .maybeSingle();
+
+      if (resp == null || resp['ativo'] != true) {
+        await SupabaseManager.client.auth.signOut();
+        _showSnack('Técnico não encontrado ou desativado.');
+        return;
+      }
 
       final tecnicoId = resp['id'] as int;
       final tecnicoNome = (resp['nome'] ?? 'Técnico').toString();
