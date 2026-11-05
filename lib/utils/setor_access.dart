@@ -40,24 +40,36 @@ const Set<String> kAllSetores = {
   'administrativo',
 };
 
+/// O que cada setor enxerga ALEM do proprio.
+///
+/// Todo setor sempre ve o proprio -- isso nao precisa estar aqui. Este mapa
+/// guarda so o acrescimo, e por isso cada regra nova e uma linha.
+///
+/// As regras nao sao todas reciprocas, e isso e proposital. Lab eletronico e
+/// lab motores se enxergam nos dois sentidos, assim como reforma e pintura.
+/// Automacao enxerga reforma, pintura e as duas ferramentarias, mas elas NAO
+/// enxergam automacao de volta -- se um dia tiver que ser mutuo, basta
+/// acrescentar 'automacao' na linha de cada uma.
+const Map<String, Set<String>> kVisibilidadeExtraPorSetor = {
+  'lab_eletronico': {'lab_motores'},
+  'lab_motores': {'lab_eletronico'},
+  'reforma': {'pintura'},
+  'pintura': {'reforma'},
+  'ferram_centro': {'ferram_torno'},
+  'ferram_torno': {'ferram_centro'},
+  'automacao': {'reforma', 'pintura', 'ferram_centro', 'ferram_torno'},
+};
+
 Set<String> visibleSetoresFor(String? raw) {
   final setor = normalizeSetor(raw);
-  switch (setor) {
-    case 'administrativo':
-      return {...kAllSetores};
-    case 'lab_eletronico':
-      return {'lab_eletronico', 'lab_motores'};
-    case 'lab_motores':
-      return {'lab_motores', 'lab_eletronico'};
-    case 'reforma':
-      return {'reforma', 'pintura'};
-    case 'pintura':
-      return {'pintura', 'reforma'};
-    case '':
-      return <String>{};
-    default:
-      return {setor};
-  }
+
+  // Sem setor nao ve nada -- e o que barra o login em canAccessApp.
+  if (setor.isEmpty) return <String>{};
+
+  // Administrativo e o unico que ve tudo.
+  if (setor == 'administrativo') return {...kAllSetores};
+
+  return {setor, ...?kVisibilidadeExtraPorSetor[setor]};
 }
 
 bool canAccessApp(String? raw) => normalizeSetor(raw).isNotEmpty;
